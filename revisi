@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembelajaran Ekologi dan Keanekaragaman Hayati Indonesia</title>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-dark: #1b5e20;
+            --secondary: #81c784;
+            --cream-bg: #fffdd0;
+            --cream-card: #fff8dc;
+            --cream-border: #f0e68c;
+            --dark-text: #1c3127;
+            --light-bg: #f4f9f4;
+            --accent-orange: #ff9800;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Container & Page Layout */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding: 40px 20px 110px 20px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glassmorphism Overlay Card */
+        .card {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 920px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+            border: 1px solid rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        /* Cream Box for Instructions & CP/TP */
+        .cream-box {
+            background-color: var(--cream-card);
+            border: 2px solid var(--cream-border);
+            border-radius: 20px;
+            padding: 28px;
+            margin: 20px 0;
+            text-align: left;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+            color: #3e2723;
+        }
+
+        .cp-tp-box {
+            background-color: #ffffff;
+            border-left: 5px solid var(--primary);
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-top: 20px;
+            text-align: left;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .cp-tp-box h3 {
+            color: var(--primary-dark);
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tp-list {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .tp-list li {
+            margin-bottom: 10px;
+            padding-left: 24px;
+            position: relative;
+            font-size: 0.98rem;
+            line-height: 1.6;
+        }
+
+        .tp-list li::before {
+            content: "\f058";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        /* Navigation Buttons */
+        .btn-next-bottom-right {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(46, 125, 50, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .btn-next-bottom-right:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 12px 25px rgba(46, 125, 50, 0.5);
+            background: linear-gradient(135deg, #388e3c, #1b5e20);
+        }
+
+        .btn-back-bottom-left {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--primary-dark);
+            border: 2px solid var(--primary);
+            padding: 13px 28px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .btn-back-bottom-left:hover {
+            transform: translateY(-3px) scale(1.03);
+            background: #e8f5e9;
+            box-shadow: 0 12px 25px rgba(46, 125, 50, 0.2);
+        }
+
+        /* Headings & Typography */
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 1.95rem;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 1.05rem;
+            line-height: 1.65;
+            margin-bottom: 12px;
+        }
+
+        /* Hero Images */
+        .hero-img-container {
+            width: 100%;
+            height: 320px;
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .hero-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 1rem;
+            border: 2px solid #c8e6c9;
+            border-radius: 12px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+        }
+
+        /* Menu Options & Tabs */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid #e8f5e9;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 24px rgba(46, 125, 50, 0.15);
+        }
+
+        .menu-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .menu-card h3 {
+            font-size: 1.4rem;
+            color: var(--dark-text);
+        }
+
+        /* Content Viewer Container */
+        .content-display {
+            margin-top: 30px;
+            width: 100%;
+            display: none;
+        }
+
+        .content-display.active {
+            display: block;
+        }
+
+        .iframe-wrapper {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid #c8e6c9;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            background: #000;
+        }
+
+        .iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Game Categories */
+        .game-section {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .game-category {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 6px solid var(--primary);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+        }
+
+        .game-category h4 {
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .game-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #e8f5e9;
+            color: var(--primary-dark);
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin: 5px 8px 5px 0;
+            transition: all 0.2s;
+            border: 1px solid #c8e6c9;
+        }
+
+        .game-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* AI Chatbot Screen 5 */
+        .chatbot-container {
+            width: 100%;
+            max-width: 650px;
+            background: white;
+            border-radius: 20px;
+            border: 2px solid #c8e6c9;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            height: 400px;
+        }
+
+        .chat-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #fafafa;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        .message.bot {
+            background: #e8f5e9;
+            color: var(--primary-dark);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .message.user {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-input-area {
+            display: flex;
+            padding: 10px;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            outline: none;
+        }
+
+        .chat-input-area button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            margin-left: 8px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .motivation-box {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LAYAR 1: HALAMAN JUDUL -->
+    <div id="page-1" class="page active" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1511497584788-876761465586?q=80&w=1600&auto=format&fit=crop');">
+        <div class="card">
+            <div class="hero-img-container">
+                <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1200&auto=format&fit=crop" alt="Keanekaragaman Hayati Indonesia">
+            </div>
+            <h1>Pembelajaran Ekologi dan Keanekaragaman Hayati Indonesia</h1>
+            <p>Jelajahi kekayaan flora, fauna, dan keseimbangan ekosistem Nusantara secara interaktif!</p>
+        </div>
+        <button class="btn-next-bottom-right" onclick="goToPage(2)">
+            Selanjutnya <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <!-- LAYAR 2: HALAMAN ARAHAN + CP & TP -->
+    <div id="page-2" class="page" style="background-image: linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)), url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop');">
+        <div class="card">
+            <h2>Petunjuk Petualangan Belajar</h2>
+            <div class="cream-box">
+                <p style="font-weight: 700; font-size: 1.2rem; color: #2e7d32; margin-bottom: 12px;">Halo Penjelajah Hebat! 🌿✨</p>
+                <p>Sebelum mulai belajar di website, perhatikan langkah-langkah penting berikut ini ya:</p>
+                <p><strong>1. Pelajari:</strong> Tonton video pendahuluan dan baca materi pembelajaran dengan saksama. 📖</p>
+                <p><strong>2. Bermain & Berlatih:</strong> Mainkan semua game interaktif dan kuis yang tersedia untuk menguji pemahamanmu! 🎮</p>
+                <p><strong>3. Bertanya ke AI:</strong> Jika ada materi yang belum dipahami, gunakan asisten AI di halaman akhir untuk berdiskusi. 🤖</p>
+
+                <!-- Bagian CP dan TP -->
+                <div class="cp-tp-box">
+                    <h3><i class="fas fa-bullseye"></i> Capaian Pembelajaran (CP)</h3>
+                    <p style="margin-bottom: 14px; font-weight: 600; color: #1c3127;">Peserta didik mampu mengidentifikasi interaksi antar makhluk hidup dan lingkungannya.</p>
+
+                    <h3><i class="fas fa-list-check"></i> Alur Tujuan Pembelajaran (ATP / TP)</h3>
+                    <ul class="tp-list">
+                        <li><strong>TP 1:</strong> Peserta didik mampu mengidentifikasi komponen biotik dan abiotik yang terdapat dalam suatu ekosistem dengan benar.</li>
+                        <li><strong>TP 2:</strong> Peserta didik mampu menjelaskan pengaruh faktor biotik dan abiotik terhadap kelangsungan hidup makhluk hidup di lingkungannya.</li>
+                        <li><strong>TP 3:</strong> Peserta didik mampu mengidentifikasi berbagai bentuk interaksi antar makhluk hidup, seperti kompetisi, predasi, herbivori, dan simbiosis, berdasarkan contoh dalam kehidupan sehari-hari.</li>
+                        <li><strong>TP 4:</strong> Peserta didik mampu menganalisis hubungan antara makhluk hidup dalam ekosistem melalui rantai makanan, jaring-jaring makanan, dan aliran energi.</li>
+                        <li><strong>TP 5:</strong> Peserta didik mampu menganalisis dampak perubahan lingkungan terhadap interaksi antar makhluk hidup dan keseimbangan ekosistem.</li>
+                    </ul>
+                </div>
+
+                <p style="font-weight: 700; color: #1b5e20; margin-top: 18px; margin-bottom: 0;">Siap bertualang? Klik tombol Selanjutnya di pojok kanan bawah dan selamat bersenang-senang! 🚀</p>
+            </div>
+        </div>
+        <button class="btn-back-bottom-left" onclick="goToPage(1)">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </button>
+        <button class="btn-next-bottom-right" onclick="goToPage(3)">
+            Selanjutnya <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <!-- LAYAR 3: LOGIN / IDENTITAS SISWA -->
+    <div id="page-3" class="page" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1600&auto=format&fit=crop');">
+        <div class="card">
+            <div class="hero-img-container" style="height: 200px;">
+                <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1200&auto=format&fit=crop" alt="Hutan Indonesia">
+            </div>
+            <h2>Masuk Pembelajaran</h2>
+            <p>Silakan isi identitas diri kamu sebelum mulai menjelajah:</p>
+            <div style="max-width: 450px; margin: 0 auto;">
+                <div class="form-group">
+                    <label for="studentName"><i class="fas fa-user"></i> Nama Lengkap:</label>
+                    <input type="text" id="studentName" placeholder="Masukkan nama lengkapmu..." required>
+                </div>
+                <div class="form-group">
+                    <label for="studentClass"><i class="fas fa-graduation-cap"></i> Kelas:</label>
+                    <input type="text" id="studentClass" placeholder="Contoh: VII A / VIII B..." required>
+                </div>
+            </div>
+        </div>
+        <button class="btn-back-bottom-left" onclick="goToPage(2)">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </button>
+        <button class="btn-next-bottom-right" onclick="saveIdentityAndNext()">
+            Selanjutnya <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <!-- LAYAR 4: HALAMAN MENU UTAMA -->
+    <div id="page-4" class="page" style="background-image: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1600&auto=format&fit=crop');">
+        <div class="card" style="max-width: 1000px;">
+            <h2 id="greetingText">Menu Pembelajaran Utama</h2>
+            <p>Pilih menu di bawah ini untuk memulai sesi pembelajaran:</p>
+            
+            <div class="menu-grid">
+                <div class="menu-card" onclick="openContent('pendahuluan')">
+                    <i class="fas fa-circle-play"></i>
+                    <h3>Pendahuluan</h3>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Tonton video pengantar ekologi</p>
+                </div>
+                <div class="menu-card" onclick="openContent('materi')">
+                    <i class="fas fa-book-open-reader"></i>
+                    <h3>Materi</h3>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Baca & pelajari modul keanekaragaman hayati</p>
+                </div>
+                <div class="menu-card" onclick="openContent('game')">
+                    <i class="fas fa-gamepad"></i>
+                    <h3>Game</h3>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Mainkan game interaktif & kuis evaluasi</p>
+                </div>
+            </div>
+
+            <!-- Content Area: Pendahuluan (Video) -->
+            <div id="content-pendahuluan" class="content-display">
+                <h3 style="margin-bottom: 15px; color: var(--primary-dark);"><i class="fas fa-video"></i> Video Pendahuluan</h3>
+                <div class="iframe-wrapper">
+                    <iframe src="https://drive.google.com/file/d/1PV6NcBLJjQkDtP1VRjggHrVyNBG0rPux/preview" allow="autoplay" allowfullscreen></iframe>
+                </div>
+                <p style="margin-top: 10px; font-size: 0.9rem;">Jika video tidak muncul, <a href="https://drive.google.com/file/d/1PV6NcBLJjQkDtP1VRjggHrVyNBG0rPux/view?usp=sharing" target="_blank" style="color: var(--primary); font-weight: 700;">klik di sini untuk membuka di Google Drive</a>.</p>
+            </div>
+
+            <!-- Content Area: Materi (Document) -->
+            <div id="content-materi" class="content-display">
+                <h3 style="margin-bottom: 15px; color: var(--primary-dark);"><i class="fas fa-file-pdf"></i> Modul Materi Pembelajaran</h3>
+                <div class="iframe-wrapper" style="height: 550px;">
+                    <iframe src="https://drive.google.com/file/d/1VznNh5wnR1SJIaM6XI4EoXX8C6XRxH5Y/preview"></iframe>
+                </div>
+                <p style="margin-top: 10px; font-size: 0.9rem;">Jika materi tidak terbuka, <a href="https://drive.google.com/file/d/1VznNh5wnR1SJIaM6XI4EoXX8C6XRxH5Y/view?usp=drivesdk" target="_blank" style="color: var(--primary); font-weight: 700;">klik di sini untuk melihat dokumen</a>.</p>
+            </div>
+
+            <!-- Content Area: Game Options -->
+            <div id="content-game" class="content-display">
+                <h3 style="margin-bottom: 15px; color: var(--primary-dark);"><i class="fas fa-trophy"></i> Pilihan Permainan Interaktif</h3>
+                <div class="game-section">
+                    
+                    <div class="game-category">
+                        <h4>A. Memorize (Game Daya Ingat)</h4>
+                        <a href="https://www.educaplay.com/learning-resources/31068305-memory_game.html" target="_blank" class="game-btn">
+                            <i class="fas fa-brain"></i> Permainan 1 Ekosistem
+                        </a>
+                        <a href="https://www.educaplay.com/learning-resources/31069321-komponen_biotik_dan_abiotik_lingkungan.html" target="_blank" class="game-btn">
+                            <i class="fas fa-leaf"></i> Permainan 2 Komponen Biotik & Abiotik
+                        </a>
+                    </div>
+
+                    <div class="game-category">
+                        <h4>B. Puzzle</h4>
+                        <a href="https://puzzel.org/id/jigsaw/play?p=-P3xJuat0gxCfdjLCvIW" target="_blank" class="game-btn">
+                            <i class="fas fa-puzzle-piece"></i> Puzzle Siklus Air
+                        </a>
+                        <a href="https://puzzel.org/id/jigsaw/play?p=-P3xfXDwmyDYnMdXamQs" target="_blank" class="game-btn">
+                            <i class="fas fa-utensils"></i> Puzzle Rantai Makanan
+                        </a>
+                    </div>
+
+                    <div class="game-category">
+                        <h4>C. Quiz Materi</h4>
+                        <a href="https://wayground.com/join?gc=31550333" target="_blank" class="game-btn" style="background: #fff3e0; border-color: #ffe0b2; color: #e65100;">
+                            <i class="fas fa-star"></i> Kuis Evaluasi Materi
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <button class="btn-back-bottom-left" onclick="goToPage(3)">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </button>
+        <button class="btn-next-bottom-right" onclick="goToPage(5)">
+            Selanjutnya <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <!-- LAYAR 5: HALAMAN TERAKHIR & CHATBOT AI -->
+    <div id="page-5" class="page" style="background-image: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1600&auto=format&fit=crop');">
+        <div class="card" style="max-width: 850px;">
+            <h2>Asisten AI Ekologi & Motivasi Belajar</h2>
+            <p>Punya pertanyaan yang belum dipahami tentang Ekologi dan Keanekaragaman Hayati? Tanya ke AI di bawah ini!</p>
+
+            <!-- Chatbot AI Interface -->
+            <div class="chatbot-container">
+                <div class="chat-header">
+                    <i class="fas fa-robot" style="font-size: 1.4rem;"></i> EcoBot - Asisten Pembelajaran AI
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot">
+                        Halo Penjelajah! Saya EcoBot 🌿. Ada materi ekologi, interaksi makhluk hidup, atau keanekaragaman hayati Indonesia yang ingin kamu tanyakan?
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="userInput" placeholder="Ketik pertanyaanmu di sini..." onkeypress="handleKeyPress(event)">
+                    <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Kirim</button>
+                </div>
+            </div>
+
+            <!-- Pesan Motivasi -->
+            <div class="motivation-box">
+                <i class="fas fa-seedling" style="font-size: 1.5rem; margin-right: 8px;"></i>
+                "Dengan mempelajari Ekologi dan Keanekaragaman Hayati Indonesia, kamu belajar menjaga masa depan bumi Nusantara. Tetap semangat bertualang dan lindungi alam kita! 🌿🇮🇩✨"
+            </div>
+        </div>
+        <button class="btn-back-bottom-left" onclick="goToPage(4)">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </button>
+    </div>
+
+    <script>
+        // Function Navigation between Screens
+        function goToPage(pageNumber) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('page-' + pageNumber).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // Save Student Identity
+        function saveIdentityAndNext() {
+            const name = document.getElementById('studentName').value.trim();
+            const studentClass = document.getElementById('studentClass').value.trim();
+
+            if (!name || !studentClass) {
+                alert('Silakan isi Nama Lengkap dan Kelas terlebih dahulu ya!');
+                return;
+            }
+
+            document.getElementById('greetingText').innerText = `Selamat Belajar, ${name} (${studentClass})! 🌿`;
+            goToPage(4);
+        }
+
+        // Open Content in Main Menu
+        function openContent(contentId) {
+            document.querySelectorAll('.content-display').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById('content-' + contentId).classList.add('active');
+        }
+
+        // AI Chatbot Logic (Covers CP & TP 1-5)
+        function sendMessage() {
+            const inputField = document.getElementById('userInput');
+            const messageText = inputField.value.trim();
+            if (!messageText) return;
+
+            const chatMessages = document.getElementById('chatMessages');
+
+            // User Message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            userMsg.innerText = messageText;
+            chatMessages.appendChild(userMsg);
+
+            inputField.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Bot Response
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.className = 'message bot';
+                botMsg.innerText = getAIResponse(messageText);
+                chatMessages.appendChild(botMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 500);
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function getAIResponse(text) {
+            const query = text.toLowerCase();
+            if (query.includes('ekologi')) {
+                return "Ekologi adalah cabang ilmu biologi yang mempelajari interaksi timbal balik antara makhluk hidup (biotik) dengan lingkungannya (abiotik)! 🌿";
+            } else if (query.includes('biotik') || query.includes('abiotik')) {
+                return "Komponen Biotik adalah makhluk hidup (tumbuhan, hewan, manusia, mikroorganisme), sedangkan Abiotik adalah komponen tak hidup (air, udara, tanah, cahaya matahari, suhu). Keduanya saling memengaruhi kelangsungan hidup di ekosistem! ☀️💧";
+            } else if (query.includes('simbiosis') || query.includes('predasi') || query.includes('kompetisi') || query.includes('interaksi') || query.includes('herbivori')) {
+                return "Interaksi antar makhluk hidup meliputi: Kompetisi (persaingan sumber daya), Predasi (pemangsa & mangsa), Herbivori (hewan pemakan tumbuhan), dan Simbiosis (Mutualisme saling menguntungkan, Komensalisme satu untung satu netral, Parasitisme satu untung satu dirugikan) 🐝🌸";
+            } else if (query.includes('rantai makanan') || query.includes('jaring') || query.includes('aliran energi')) {
+                return "Rantai makanan adalah jalur perpindahan energi dari produsen → konsumen I → konsumen II → pengurai. Gabungan beberapa rantai makanan membentuk jaring-jaring makanan yang menjaga kestabilan ekosistem! 🍃➡️🐇➡️🦊";
+            } else if (query.includes('perubahan lingkungan') || query.includes('keseimbangan') || query.includes('dampak')) {
+                return "Perubahan lingkungan (seperti penebangan hutan, pencemaran, atau perubahan iklim) dapat memutus rantai makanan, menurunkan populasi spesies tertentu, dan mengganggu keseimbangan ekosistem secara keseluruhan 🌍⚠️";
+            } else if (query.includes('siklus air')) {
+                return "Siklus air terdiri dari evaporasi (penguapan), kondensasi (pembentukan awan), dan presipitasi (hujan) yang menjaga ketersediaan air bagi seluruh komponen biotik 🌧️";
+            } else if (query.includes('keanekaragaman') || query.includes('biodiversitas')) {
+                return "Indonesia merupakan negara megabiodiversitas dengan keanekaragaman tingkat gen, jenis, dan ekosistem, termasuk flora-fauna endemik seperti Komodo, Orangutan, dan Rafflesia arnoldii! 🦧🌺";
+            } else {
+                return "Pertanyaan bagus! Kamu bisa menanyakan topik seputar komponen biotik & abiotik, bentuk interaksi (simbiosis, predasi, kompetisi), rantai & jaring-jaring makanan, atau dampak perubahan lingkungan. Apa yang ingin kita bahas? 🧐";
+            }
+        }
+    </script>
+</body>
+</html>
